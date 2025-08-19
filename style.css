@@ -8,16 +8,13 @@
 /* Board */
 #board {
     list-style: none;
+    padding: 1em 1em;
     margin: 4em;
     background-color: lightgoldenrodyellow;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, auto));
+    grid-template-columns: repeat(auto-fit, minmax(120px, auto));
     justify-content: space-evenly;
-}
-
-#board li {
-    width: 100%;
-    margin: 1em;
+    gap: 1em;
 }
 
 .card {
