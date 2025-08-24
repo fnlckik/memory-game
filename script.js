@@ -65,9 +65,9 @@ async function hide(card) {
     card.querySelector(".front").classList.add("hidden");
 }
 
-async function showCards(a, b) {
+async function showPair(a, b) {
     return new Promise(resolve => {
-        reveal(a); reveal(b);
+        reveal(b);
         setTimeout(() => {
             checkPair(a, b);
             resolve();
@@ -92,8 +92,9 @@ async function handleStep(e) {
     const current = e.target.parentNode;
     if (!last) {
         last = current;
+        reveal(last);
     } else if (current !== last) {
-        await showCards(last, current);
+        await showPair(last, current);
         last = null;
     }
     board.addEventListener("click", handleStep);
