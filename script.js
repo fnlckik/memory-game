@@ -1,10 +1,19 @@
 const characters = [
     "black-widow", "captain-america",
-    "hawkeye", "hulk",
-    "iron-man", "thor"
 ];
+// "hawkeye", "hulk",
+// "iron-man", "thor"
 
 const board = document.querySelector("#board");
+
+// Time count
+let remaining = [];
+let startTime = 0;
+let timerId;
+
+// Current data
+let currentTime = 0;
+let errorCount = 0;
 let last = null, current = null;
 
 function randint(a, b) {
@@ -33,12 +42,14 @@ function hideCards() {
                 li.querySelector(".front").classList.add("hidden");
                 li.querySelector(".back").classList.remove("hidden");
             }
+            startTime = Date.now();
             resolve("Kártyák elrejtve!");
         }, 30);
     });
 }
 
 async function loadCards(cards) {
+    remaining = [...cards];
     for (const card of cards) {
         const li = createCard(card);
         board.appendChild(li);
@@ -60,7 +71,7 @@ async function reveal(card) {
     card.querySelector(".back").classList.add("hidden");
 }
 
-async function hide(card) {
+async function flip(card) {
     card.querySelector(".back").classList.remove("hidden");
     card.querySelector(".front").classList.add("hidden");
 }
@@ -75,15 +86,29 @@ async function showPair(a, b) {
     });
 }
 
+function checkEndgame() {
+    if (remaining.length > 0) return;
+    clearInterval(timerId);
+    const p = document.querySelector("#win");
+    p.style.display = "block";
+    board.style.display = "none";
+    board.removeEventListener("click", handleStep);
+}
+
 function checkPair(a, b) {
     const hero1 = a.querySelector("img").alt;
     const hero2 = b.querySelector("img").alt;
     if (hero1 === hero2) {
         a.classList.add("hidden");
         b.classList.add("hidden");
+        remaining = remaining.filter(e => e !== hero1);
     } else {
-        hide(a); hide(b);
+        flip(a); flip(b);
+        errorCount++;
+        const errorSpan = document.querySelector("#error");
+        errorSpan.innerText = errorCount;
     }
+    checkEndgame();
 }
 
 async function handleStep(e) {
@@ -100,10 +125,20 @@ async function handleStep(e) {
     board.addEventListener("click", handleStep);
 }
 
+function countTime() {
+    const timeSpan = document.querySelector("#time");
+    timerId = setInterval(() => {
+        currentTime = Date.now();
+        const elapsed = parseInt((currentTime - startTime) / 1000);
+        timeSpan.innerText = elapsed;
+    }, 1000);
+}
+
 async function startGame() {
     cards = [...characters, ...characters];
     shuffle(cards);
     await loadCards(cards);
+    countTime();
     board.addEventListener("click", handleStep);
 }
 
