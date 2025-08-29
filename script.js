@@ -1,8 +1,18 @@
 const characters = [
     "black-widow", "captain-america",
+    "hawkeye", "hulk",
+    "iron-man", "thor",
+    "ant-man", "falcon", "star-lord",
+    "vision", "wanda-maximoff",
+    "black-panther", "captain-marvel",
+    "doctor-strange", "spider-man"
 ];
-// "hawkeye", "hulk",
-// "iron-man", "thor"
+
+const cardNumbers = {
+    "easy": 6,
+    "normal": 11,
+    "hard": 15
+};
 
 const board = document.querySelector("#board");
 
@@ -12,6 +22,10 @@ let startTime = 0;
 let timerId;
 
 // Current data
+let username;
+let usedRevealPair = false, usedRevealBoard = false;
+let level = "easy";
+let cards = [];
 let currentTime = 0;
 let errorCount = 0;
 let last = null, current = null;
@@ -44,7 +58,7 @@ function hideCards() {
             }
             startTime = Date.now();
             resolve("Kártyák elrejtve!");
-        }, 30);
+        }, 300);
     });
 }
 
@@ -127,6 +141,8 @@ async function handleStep(e) {
 
 function countTime() {
     const timeSpan = document.querySelector("#time");
+    const resultDiv = timeSpan.parentNode.parentNode;
+    resultDiv.classList.remove("d-none");
     timerId = setInterval(() => {
         currentTime = Date.now();
         const elapsed = parseInt((currentTime - startTime) / 1000);
@@ -134,16 +150,52 @@ function countTime() {
     }, 1000);
 }
 
-async function startGame() {
-    cards = [...characters, ...characters];
-    shuffle(cards);
-    await loadCards(cards);
-    countTime();
-    board.addEventListener("click", handleStep);
+function getData() {
+    const input = document.querySelector("input");
+    username = input.value;
+    const p = document.querySelector("form p");
+    p.innerText = name ? "" : "Add meg a neved!";
+    const select = document.querySelector("select");
+    level = select.value;
 }
 
-// Automatic start (manual testing)
-function main() {
-    startGame();
+async function startGame(e) {
+    e.preventDefault();
+    getData();
+    if (!username) return;
+    button.disabled = true;
+    button.removeEventListener("click", startGame);
+    
+    board.classList.remove("d-none");
+    cards = characters.splice(0, cardNumbers[level]);
+    cards = [...cards, ...cards];
+    shuffle(cards);
+    await loadCards(cards);
+    document.querySelector("#ability").classList.remove("d-none");
+    countTime();
+
+    board.addEventListener("click", handleStep);
+    revealPairBtn.addEventListener("click", revealPair);
 }
-main();
+const button = document.querySelector("form button");
+button.addEventListener("click", startGame);
+
+// Abilities
+const revealPairBtn = document.querySelector("#revealPair");
+function revealPair() {
+    if (!username || usedRevealPair) return;
+    usedRevealPair = true;
+    revealPairBtn.disabled = true;
+    revealPairBtn.removeEventListener("click", revealPair);
+
+    const chosen = cards[randint(0, cards.length - 1)];
+    const pair = Array.from(board.children).filter(e => e.querySelector("img").alt === chosen);
+    reveal(pair[0]);
+    showPair(pair[0], pair[1]);
+}
+
+const revealBoardBtn = document.querySelector("#revealBoard");
+function revealBoard() {
+    console.log("TODO");
+}
+revealBoardBtn.addEventListener("click", revealBoard);

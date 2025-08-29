@@ -8,9 +8,25 @@
 </head>
 <body>
     <h1>MCU Memory-Game</h1>
-    <ul id="board"></ul>
+    <form>
+        <label>Név: <input type="text"></label>
+        <label>Szint:
+            <select name="level">
+                <option value="easy">Könnyű</option>
+                <option value="normal">Normál</option>
+                <option value="hard">Nehéz</option>
+            </select>
+        </label>
+        <button>Start</button>
+        <p></p>
+    </form>
+    <div id="ability" class="d-none">
+        <button id="revealPair">Pár felfedése</button>
+        <button id="revealBoard">Kártyák mutatása</button>
+    </div>
+    <ul id="board" class="d-none"></ul>
     <p id="win">Nyertél!</p>
-    <div id="result">
+    <div id="result" class="d-none">
         <div>Idő: <span id="time">0</span> mp</div>
         <div>Hibák száma: <span id="error">0</span></div>
     </div>

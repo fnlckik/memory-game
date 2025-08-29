@@ -3,8 +3,11 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    overflow: hidden;
     font-family: "MS Comic Sans", cursive;
+}
+
+body {
+    height: 100vh;
 }
 
 h1 {
@@ -12,11 +15,16 @@ h1 {
     text-align: center;
 }
 
+.d-none {
+    display: none !important;
+}
+
 /* Board */
 #board {
+    width: 80%;
     list-style: none;
     padding: 1em 1em;
-    margin: 2em 4em;
+    margin: 2em auto;
     background-color: lightgoldenrodyellow;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, auto));
@@ -55,28 +63,34 @@ h1 {
 }
 
 /* Result div */
-#result {
+#result, form, #ability {
     background-color: bisque;
+    color: black;
+    border: 2px solid black;
+    border-radius: 15px;
     width: 80%;
-    height: 100px;
-    display: flex;
+    min-height: 50px;
     margin: 2em auto;
+    display: flex;
     justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap
 }
 
 #result div {
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: bold;
+    margin: 1em;
 }
 
 #win {
-    margin-bottom: 2em;
+    margin: 2em auto;
     font-size: 2em;
     text-align: center;
     font-weight: bold;
-    padding: 1em;
+    padding: 1em 0.5em;
     display: none;
+    width: 60%;
     animation: pulsing 1s infinite;
 }
 
@@ -85,6 +99,49 @@ h1 {
         transform: scale(1);
     }
     50% {
-        transform: scale(1.5);
+        transform: scale(1.25);
     }
+}
+
+/* Form: name, level */
+form {
+    width: 80%;
+    margin: auto;
+    padding: 1em;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+form label {
+    /* margin: 1em; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+form input, form select {
+    padding: 0.4em;
+    max-width: 200px;
+}
+
+button {
+    font-weight: bold;
+    padding: 0.4em 1em;
+    text-transform: uppercase;
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+form p {
+    color: red;
+}
+
+#ability {
+    gap: 1em;
+    padding: 1em;
+}
+
+#ability button {
+    width: var(50% - 1em);
 }
