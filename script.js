@@ -9,9 +9,9 @@ const characters = [
 ];
 
 const cardNumbers = {
-    "easy": 6,
-    "normal": 11,
-    "hard": 15
+    "könnyű": 6,
+    "normál": 11,
+    "nehéz": 15
 };
 
 const board = document.querySelector("#board");
@@ -24,7 +24,7 @@ let timerId;
 // Current data
 let email, age;
 let usedRevealPair = false, usedRevealBoard = false;
-let level = "easy";
+let level = "könnyű";
 let cards = [];
 let currentTime = 0;
 let errorCount = 0;

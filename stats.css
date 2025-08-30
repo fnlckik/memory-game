@@ -11,3 +11,21 @@ table, th, td {
     text-align: center;
 }
 
+th {
+    background-color: bisque;
+}
+
+label {
+    width: fit-content;
+    display: block;
+    margin: 0.5em auto;
+    padding: 0.5em;
+}
+
+label input {
+    padding: 0.4em;
+}
+
+.d-none {
+    display: none;
+}
