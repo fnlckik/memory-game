@@ -182,20 +182,29 @@ button.addEventListener("click", startGame);
 
 // Abilities
 const revealPairBtn = document.querySelector("#revealPair");
-function revealPair() {
+async function revealPair() {
     if (!username || usedRevealPair) return;
     usedRevealPair = true;
     revealPairBtn.disabled = true;
     revealPairBtn.removeEventListener("click", revealPair);
+    board.removeEventListener("click", handleStep);
 
     const chosen = cards[randint(0, cards.length - 1)];
     const pair = Array.from(board.children).filter(e => e.querySelector("img").alt === chosen);
     reveal(pair[0]);
-    showPair(pair[0], pair[1]);
+    await showPair(pair[0], pair[1]);
+
+    const lastParent = last.parentNode;
+    console.log(last, lastParent.classList.contains("hidden"));
+    
+    if (lastParent.classList.contains("hidden")) last = null;
+    board.addEventListener("click", handleStep);
 }
 
 const revealBoardBtn = document.querySelector("#revealBoard");
 function revealBoard() {
-    console.log("TODO");
+    board.removeEventListener("click", handleStep);
+
+    board.addEventListener("click", handleStep);
 }
 revealBoardBtn.addEventListener("click", revealBoard);
