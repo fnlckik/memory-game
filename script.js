@@ -226,7 +226,7 @@ async function revealPair() {
     const pair = Array.from(board.children).filter(e => e.querySelector("img").alt === chosen);
     reveal(pair[0]);
     await showPair(pair[0], pair[1]);
-    if (last && last.parentNode.classList.contains("flipped")) last = null;
+    if (last && last.parentNode.classList.contains("d-none")) last = null;
     board.addEventListener("click", handleStep);
 }
 
