@@ -22,7 +22,7 @@ let startTime = 0;
 let timerId;
 
 // Current data
-let username;
+let email, age;
 let usedRevealPair = false, usedRevealBoard = false;
 let level = "easy";
 let cards = [];
@@ -58,7 +58,7 @@ function hideCards() {
             }
             startTime = Date.now();
             resolve("Kártyák elrejtve!");
-        }, 3000);
+        }, 300);
     });
 }
 
@@ -100,6 +100,21 @@ async function showPair(a, b) {
     });
 }
 
+function getStats() {
+    let games = JSON.parse(localStorage.getItem("games"));
+    if (!games) games = [];
+    return games;
+}
+
+function saveStats() {
+    const time = parseInt((currentTime - startTime) / 1000);
+    const date = new Date(Date.now()).toLocaleDateString();
+    const data = { email, age, level, time, errorCount, date };
+    const games = getStats();
+    games.push(data);
+    localStorage.setItem("games", JSON.stringify(games));
+}
+
 function checkEndgame() {
     if (remaining.length > 0) return;
     clearInterval(timerId);
@@ -107,6 +122,7 @@ function checkEndgame() {
     p.style.display = "block";
     board.style.display = "none";
     board.removeEventListener("click", handleStep);
+    saveStats();
 }
 
 function checkPair(a, b) {
@@ -151,10 +167,12 @@ function countTime() {
 }
 
 function getData() {
-    const input = document.querySelector("input");
-    username = input.value;
+    const emailInput = document.querySelector("input[type=text]");
+    email = emailInput.value;
+    const ageInput = document.querySelector("input[type=number]");
+    age = parseInt(ageInput.value);
     const p = document.querySelector("form p");
-    p.innerText = name ? "" : "Add meg a neved!";
+    p.innerText = (email && age) ? "" : "Add meg az email címed és a korod!";
     const select = document.querySelector("select");
     level = select.value;
 }
@@ -162,7 +180,7 @@ function getData() {
 async function startGame(e) {
     e.preventDefault();
     getData();
-    if (!username) return;
+    if (!email || !age) return;
     button.disabled = true;
     button.removeEventListener("click", startGame);
     
@@ -183,7 +201,7 @@ button.addEventListener("click", startGame);
 // Abilities
 const revealPairBtn = document.querySelector("#revealPair");
 async function revealPair() {
-    if (!username || usedRevealPair) return;
+    if (usedRevealPair) return;
     usedRevealPair = true;
     revealPairBtn.disabled = true;
     revealPairBtn.removeEventListener("click", revealPair);
@@ -199,7 +217,7 @@ async function revealPair() {
 
 const revealBoardBtn = document.querySelector("#revealBoard");
 function revealBoard() {
-    if (!username || usedRevealBoard) return;
+    if (usedRevealBoard) return;
     usedRevealBoard = true;
     revealBoardBtn.disabled = true;
     revealBoardBtn.removeEventListener("click", revealPair);
