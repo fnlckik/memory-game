@@ -33,29 +33,43 @@ h1 {
 }
 
 .card {
-    background-color: black;
+    /* background-color: black; */
     height: 160px;
     width: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    cursor: pointer;
+    transform-style: preserve-3d; /* 3D animáció */
+}
+
+.card * {
+    outline: 1px solid black;;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 1s;
 }
 
 .back {
     position: absolute;
-    inset: 3px;
+    inset: 0;
     background-color: darkred;
+    backface-visibility: hidden;
 }
 
 .front {
     position: absolute;
-    inset: 3px;
+    inset: 0;
+    backface-visibility: hidden;
 }
 
 .card .front img {
     max-width: 100%;
     max-height: 100%;
+}
+
+.flipped {
+    transform: rotateY(180deg);
 }
 
 .hidden {

@@ -40,10 +40,10 @@ function createCard(card) {
     const li = document.createElement("li");
     li.innerHTML = `
         <div class="card">
+            <div class="back flipped"></div>
             <div class="front">
                 <img src="./images/${card}.png" alt="${card}">
             </div>
-            <div class="back hidden"></div>
         </div>
     `;
     return li;
@@ -53,12 +53,12 @@ function hideCards() {
     return new Promise(resolve => {
         setTimeout(() => {
             for (const li of board.children) {
-                li.querySelector(".front").classList.add("hidden");
-                li.querySelector(".back").classList.remove("hidden");
+                li.querySelector(".front").classList.add("flipped");
+                li.querySelector(".back").classList.remove("flipped");
             }
             startTime = Date.now();
             resolve("Kártyák elrejtve!");
-        }, 300);
+        }, 3000);
     });
 }
 
@@ -81,13 +81,13 @@ function shuffle(cards) {
 }
 
 async function reveal(card) {
-    card.querySelector(".front").classList.remove("hidden");
-    card.querySelector(".back").classList.add("hidden");
+    card.querySelector(".back").classList.add("flipped");
+    card.querySelector(".front").classList.remove("flipped");
 }
 
-async function flip(card) {
-    card.querySelector(".back").classList.remove("hidden");
-    card.querySelector(".front").classList.add("hidden");
+async function flipBack(card) {
+    card.querySelector(".front").classList.add("flipped");
+    card.querySelector(".back").classList.remove("flipped");
 }
 
 async function showPair(a, b) {
@@ -142,11 +142,11 @@ function checkPair(a, b) {
     const hero1 = a.querySelector("img").alt;
     const hero2 = b.querySelector("img").alt;
     if (hero1 === hero2) {
-        a.classList.add("hidden");
-        b.classList.add("hidden");
+        a.classList.add("d-none");
+        b.classList.add("d-none");
         remaining = remaining.filter(e => e !== hero1);
     } else {
-        flip(a); flip(b);
+        flipBack(a); flipBack(b);
         errorCount++;
         const errorSpan = document.querySelector("#error");
         errorSpan.innerText = errorCount;
@@ -179,7 +179,7 @@ function countTime() {
     }, 1000);
 }
 
-function getData() {
+function readData() {
     const emailInput = document.querySelector("input[type=text]");
     email = emailInput.value;
     const ageInput = document.querySelector("input[type=number]");
@@ -192,7 +192,7 @@ function getData() {
 
 async function startGame(e) {
     e.preventDefault();
-    getData();
+    readData();
     if (!email || !age) return;
     button.disabled = true;
     button.removeEventListener("click", startGame);
@@ -211,6 +211,8 @@ async function startGame(e) {
 const button = document.querySelector("form button");
 button.addEventListener("click", startGame);
 
+board.addEventListener("mousedown", e => e.preventDefault());
+
 // Abilities
 const revealPairBtn = document.querySelector("#revealPair");
 async function revealPair() {
@@ -224,7 +226,7 @@ async function revealPair() {
     const pair = Array.from(board.children).filter(e => e.querySelector("img").alt === chosen);
     reveal(pair[0]);
     await showPair(pair[0], pair[1]);
-    if (last && last.parentNode.classList.contains("hidden")) last = null;
+    if (last && last.parentNode.classList.contains("flipped")) last = null;
     board.addEventListener("click", handleStep);
 }
 
