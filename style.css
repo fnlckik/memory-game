@@ -11,7 +11,7 @@ body {
 }
 
 h1 {
-    margin: 2em;
+    margin: 1em;
     text-align: center;
 }
 
@@ -103,7 +103,7 @@ h1 {
     }
 }
 
-/* Form: name, level */
+/* Form: email, level */
 form {
     width: 80%;
     margin: auto;
@@ -144,4 +144,25 @@ form p {
 
 #ability button {
     width: var(50% - 1em);
+}
+
+/* Menü */
+nav {
+    margin: 1em auto;
+    width: 80%;
+    background-color: bisque;
+    display: flex;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+    padding: 1em;
+    flex-grow: 1;
+    text-align: center;
+}
+
+a:hover, a.active {
+    background-color: hsl(33, 100%, 78%);
 }

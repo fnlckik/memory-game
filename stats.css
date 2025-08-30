@@ -1,0 +1,13 @@
+/* Statisztika táblázatok */
+table {
+    width: 90%;
+    margin: auto;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 0.5em;
+    text-align: center;
+}
+
