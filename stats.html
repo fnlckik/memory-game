@@ -12,12 +12,26 @@
         <a href="index.html">Játék</a>
         <a href="stats.html" class="active">Statisztikák</a>
     </nav>
+    
     <h1>MCU Memory-Game - Statisztikák</h1>
+    
+    <h2>Lokális statisztikák</h2>
     <label class="d-none">
         Szűrés (email): <input type="text">
     </label>
     <table id="localStats"></table>
+
+    <h2>Globális statisztikák</h2>
+    <label class="">
+        Szint: 
+        <select name="level">
+            <option value="könnyű">Könnyű</option>
+            <option value="normál">Normál</option>
+            <option value="nehéz">Nehéz</option>
+        </select>
+    </label>
     <table id="globalStats"></table>
+    
     <script src="stats.js"></script>
 </body>
 </html>

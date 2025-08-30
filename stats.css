@@ -29,3 +29,7 @@ label input {
 .d-none {
     display: none;
 }
+
+h2 {
+    margin: 1em;
+}
