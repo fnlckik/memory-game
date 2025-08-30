@@ -115,7 +115,19 @@ function saveStats() {
     localStorage.setItem("games", JSON.stringify(games));
 }
 
-function checkEndgame() {
+async function postStats() {
+    const time = parseInt((currentTime - startTime) / 1000);
+    const data = { email, age, level, time, mistakes: errorCount };
+    const OPTIONS = {
+        method: "POST",
+        body: JSON.stringify(data)
+    };
+    const response = await fetch("http://localhost/memory/create/", OPTIONS);
+    const message = await response.json();
+    console.log(message);
+}
+
+async function checkEndgame() {
     if (remaining.length > 0) return;
     clearInterval(timerId);
     const p = document.querySelector("#win");
@@ -123,6 +135,7 @@ function checkEndgame() {
     board.style.display = "none";
     board.removeEventListener("click", handleStep);
     saveStats();
+    await postStats();
 }
 
 function checkPair(a, b) {
@@ -138,7 +151,6 @@ function checkPair(a, b) {
         const errorSpan = document.querySelector("#error");
         errorSpan.innerText = errorCount;
     }
-    checkEndgame();
 }
 
 async function handleStep(e) {
@@ -152,6 +164,7 @@ async function handleStep(e) {
         await showPair(last, current);
         last = null;
     }
+    await checkEndgame();
     board.addEventListener("click", handleStep);
 }
 
