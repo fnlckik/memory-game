@@ -36,6 +36,7 @@ function filterData() {
 }
 filterInput.addEventListener("input", filterData);
 
+// Adatok szervertől, rendezés
 function compareTo(a, b) {
     if (a.playtime < b.playtime || a.playtime === b.playtime && a.mistakes < b.mistakes) {
         return -1;
@@ -47,8 +48,8 @@ function compareTo(a, b) {
 }
 
 const selectLevel = document.querySelector("select");
-async function loadGlobalStats(e) {
-    const level = e.target.value;
+async function loadGlobalStats() {
+    const level = selectLevel.value;
     const response = await fetch(`http://localhost/memory/?level=${level}`);
     const data = await response.json();
     data.sort(compareTo);
@@ -56,4 +57,8 @@ async function loadGlobalStats(e) {
 }
 selectLevel.addEventListener("change", loadGlobalStats);
 
-loadLocalStats();
+// Oldal betöltésekor automatikus betöltések
+window.addEventListener("load", async () => {
+    loadLocalStats();
+    await loadGlobalStats();
+});
