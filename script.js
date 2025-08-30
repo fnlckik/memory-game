@@ -142,8 +142,8 @@ function checkPair(a, b) {
     const hero1 = a.querySelector("img").alt;
     const hero2 = b.querySelector("img").alt;
     if (hero1 === hero2) {
-        a.classList.add("d-none");
-        b.classList.add("d-none");
+        a.classList.add("hidden");
+        b.classList.add("hidden");
         remaining = remaining.filter(e => e !== hero1);
     } else {
         flipBack(a); flipBack(b);
@@ -226,7 +226,7 @@ async function revealPair() {
     const pair = Array.from(board.children).filter(e => e.querySelector("img").alt === chosen);
     reveal(pair[0]);
     await showPair(pair[0], pair[1]);
-    if (last && last.parentNode.classList.contains("d-none")) last = null;
+    if (last && last.parentNode.classList.contains("hidden")) last = null;
     board.addEventListener("click", handleStep);
 }
 

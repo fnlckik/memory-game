@@ -44,8 +44,25 @@ h1 {
     transform-style: preserve-3d; /* 3D animáció */
 }
 
+.card:hover {
+    animation: shaking 0.3s;
+    animation-iteration-count: 3;
+}
+
+@keyframes shaking {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(2deg);
+    }
+    75% {
+        transform: rotate(-2deg);
+    }
+}
+
 .card * {
-    outline: 1px solid black;;
+    outline: 2px solid black;;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: transform 1s;
 }
@@ -53,7 +70,7 @@ h1 {
 .back {
     position: absolute;
     inset: 0;
-    background-color: darkred;
+    background: radial-gradient(rgb(80, 0, 80) 10%, rgb(90, 0, 0) 90%);
     backface-visibility: hidden;
 }
 
@@ -92,7 +109,7 @@ h1 {
 }
 
 #result div {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: bold;
     margin: 1em;
 }
