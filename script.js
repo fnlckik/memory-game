@@ -58,7 +58,7 @@ function hideCards() {
             }
             startTime = Date.now();
             resolve("Kártyák elrejtve!");
-        }, 300);
+        }, 3000);
     });
 }
 
@@ -193,18 +193,21 @@ async function revealPair() {
     const pair = Array.from(board.children).filter(e => e.querySelector("img").alt === chosen);
     reveal(pair[0]);
     await showPair(pair[0], pair[1]);
-
-    const lastParent = last.parentNode;
-    console.log(last, lastParent.classList.contains("hidden"));
-    
-    if (lastParent.classList.contains("hidden")) last = null;
+    if (last && last.parentNode.classList.contains("hidden")) last = null;
     board.addEventListener("click", handleStep);
 }
 
 const revealBoardBtn = document.querySelector("#revealBoard");
 function revealBoard() {
+    if (!username || usedRevealBoard) return;
+    usedRevealBoard = true;
+    revealBoardBtn.disabled = true;
+    revealBoardBtn.removeEventListener("click", revealPair);
     board.removeEventListener("click", handleStep);
-
+    for (const card of board.children) {
+        reveal(card);
+    }
+    hideCards();
     board.addEventListener("click", handleStep);
 }
 revealBoardBtn.addEventListener("click", revealBoard);
